@@ -4,6 +4,45 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 import { Label } from "./components/label";
 import { GameCard } from "@/components/game-card";
+import { Metadata } from "next";
+
+interface ParamsProps {
+  params: {
+    id: string;
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: ParamsProps): Promise<Metadata> {
+  try {
+    const response: GameProps = await fetch(
+      `${process.env.NEXT_API_URL}/next-api/?api=game&id=${params.id}`,
+      {
+        cache: "no-store",
+      }
+    )
+      .then((response) => response.json())
+      .catch((error) => {
+        return {
+          title: "Daly Games - Descubra jogos incríveis para se divertir.",
+        };
+      });
+
+    return {
+      title: response.title,
+      description: `${response.description.slice(0, 100)}...`,
+      openGraph: {
+        title: response.title,
+        images: [response.image_url],
+      },
+    };
+  } catch (error) {
+    return {
+      title: "Daly Games - Descubra jogos incríveis para se divertir.",
+    };
+  }
+}
 
 async function getGame(id: string) {
   try {
