@@ -3,6 +3,12 @@ import Image from "next/image";
 import userImg from "../../../public/user.png";
 import { FaShareAlt } from "react-icons/fa";
 import { FavoriteCard } from "./components/favorite-card";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Daly Games - Perfil",
+  description: "Perfil usuário | Daly Games, sua plataforma de jogos!",
+};
 
 export default function Profile() {
   return (
